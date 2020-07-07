@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const { User, validate } = require('../models/user');
 const express = require('express');
+const jwt = require('json-web-token');
 const router = express.Router();
  
 router.post('/register', async (req, res) => {
@@ -46,7 +47,7 @@ router.post('/login', async (req, res) => {
     if (!validPassword) {
         return res.status(400).send('Incorrect email or password.');
     }
-    const token = jwt.sign({ _id: user._id }, 'PrivateKey');
+    const token = jwt.sign({ _id: user._id }, process.env.SECRET_KEY);
     res.send(token);
 });
  
